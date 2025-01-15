@@ -118,19 +118,37 @@ var result = 0;
 
 var grid = Utils.ParseCoordGrid(input, x => new Tree { X = x.x, Y = x.y, Height = int.Parse(x.c.ToString()) }).ToList();
 
-result = grid.Count(Evaluate);
+result = grid.Max(Evaluate);
 
-bool Evaluate(Tree item)
+foreach (var item in grid)
 {
-    if (grid.Where(o => o.X == item.X && o.Y > item.Y).All(o => o.Height < item.Height)) { return true; }
-    if (grid.Where(o => o.X == item.X && o.Y < item.Y).All(o => o.Height < item.Height)) { return true; }
-    if (grid.Where(o => o.X < item.X && o.Y == item.Y).All(o => o.Height < item.Height)) { return true; }
-    if (grid.Where(o => o.X > item.X && o.Y == item.Y).All(o => o.Height < item.Height)) { return true; }
-    return false;
+    Console.WriteLine($"{item} {Evaluate(item)}");
+}
+
+int Evaluate(Tree item)
+{
+    if (item.X == 1 && item.Y == 2)
+    {
+
+    }
+    if (item.X == 0 || item.Y == 0 || item.X == grid.Max(x => x.X) || item.Y == grid.Max(x => x.Y)) { return 0; }
+    var lL = grid.Where(o => o.X == item.X && o.Y > item.Y).OrderBy(x => x.Y).ToList();
+    var rL = grid.Where(o => o.X == item.X && o.Y < item.Y).OrderByDescending(x => x.Y).ToList();
+    var uL = grid.Where(o => o.X < item.X && o.Y == item.Y).OrderByDescending(x => x.X).ToList();
+    var dL = grid.Where(o => o.X > item.X && o.Y == item.Y).OrderBy(x => x.Y).ToList();
+    var takel = lL.TakeWhile(o => o.Height < item.Height).ToList();
+    var taker = rL.TakeWhile(o => o.Height < item.Height).ToList();
+    var takeu = uL.TakeWhile(o => o.Height < item.Height).ToList();
+    var taked = dL.TakeWhile(o => o.Height < item.Height).ToList();
+    var l = Math.Min(takel.Count() + 1, lL.Count());
+    var r = Math.Min(taker.Count() + 1, rL.Count());
+    var u = Math.Min(takeu.Count() + 1, uL.Count());
+    var d = Math.Min(taked.Count() + 1, dL.Count());
+    return l * r * u * d;
 }
 
 timer.Stop();
-Console.WriteLine(result);
+Console.WriteLine(result); // 2157912 too high
 Console.WriteLine(timer.ElapsedMilliseconds + "ms");
 Console.ReadLine();
 
