@@ -1094,7 +1094,11 @@ foreach (var item in nodes.Values)
 
 var sizes = nodes.Values.Where(x => x.Size == 0).Select(x => x.GetContainedSize(nodes)).ToList();
 
-result = sizes.Where(x => x <= 100_000).Sum();
+var total = 70000000;
+var needed = 30000000;
+var min = needed - ( total - sizes.Max());
+
+result = sizes.Where(x => x >= min).OrderBy(x => x).First();
 
 timer.Stop();
 Console.WriteLine(result);
