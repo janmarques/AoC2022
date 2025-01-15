@@ -540,7 +540,7 @@ foreach (var line in Utils.RotateClockwise(Utils.Parse2DGrid(string.Join(Environ
 {
     if (line.First() == ' ') { continue; }
     var stack = new Stack<char>();
-    stacks.Add(line.First()-48, stack);
+    stacks.Add(line.First() - 48, stack);
     foreach (var container in line.Skip(1).TakeWhile(x => x != ' '))
     {
         stack.Push(container);
@@ -553,9 +553,13 @@ foreach (var line in lines.Skip(state.Count + 1))
     var count = ns[0];
     var from = ns[1];
     var to = ns[2];
+    var tmp = new Stack<char>();
     for (int i = 0; i < count; i++)
     {
-        var container = stacks[from].Pop();
+        tmp.Push(stacks[from].Pop());
+    }
+    foreach (var container in tmp)
+    {
         stacks[to].Push(container);
     }
 }
