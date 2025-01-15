@@ -270,4 +270,16 @@ public static class Utils
             }
         }
     }
+
+    public static bool Overlaps((long from, long to) one, (long from, long to) two)
+    {
+        return (one.from <= two.to && two.to <= one.to) ||
+            (one.from <= two.from && two.from <= one.to) ||
+            (one.from <= two.from && two.to <= one.to) ||
+            (two.from <= one.from && one.to <= two.to);
+    }
+    public static bool Encloses((long from, long to) one, (long from, long to) two)
+    {
+        return (one.from <= two.from && two.to <= one.to);
+    }
 }
