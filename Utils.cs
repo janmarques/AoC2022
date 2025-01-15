@@ -278,8 +278,5 @@ public static class Utils
             (one.from <= two.from && two.to <= one.to) ||
             (two.from <= one.from && one.to <= two.to);
     }
-    public static bool Encloses((long from, long to) one, (long from, long to) two)
-    {
-        return (one.from <= two.from && two.to <= one.to);
-    }
+ 
 }
