@@ -2514,31 +2514,38 @@ var timer = System.Diagnostics.Stopwatch.StartNew();
 
 var result = 0;
 
-Choice Parse(char x) => x switch
+Choice ParseChoice(char x) => x switch
 {
-    'A' or 'X' => Choice.Rock,
-    'B' or 'Y' => Choice.Paper,
-    'C' or 'Z' => Choice.Scissors,
+    'A' => Choice.Rock,
+    'B' => Choice.Paper,
+    'C' => Choice.Scissors,
     _ => throw new ArgumentException(),
 };
 
-var games = input.Split(Environment.NewLine).Select(x => (opponent: Parse(x[0]), response: Parse(x[2]))).ToList();
+
+Result ParseResult(char x) => x switch
+{
+    'X' => Result.Loss,
+    'Y' => Result.Draw,
+    'Z' => Result.Won,
+    _ => throw new ArgumentException(),
+};
+
+var games = input.Split(Environment.NewLine).Select(x => (opponent: ParseChoice(x[0]), response: ParseResult(x[2]))).ToList();
 
 result = games.Sum(Score);
 
-//Score((Choice.Scissors, Choice.Paper));
-
-int Score((Choice opponent, Choice response) game)
+int Score((Choice opponent, Result result) game)
 {
-    var result = (Result)((game.response - game.opponent + 3) % 3);
-    var resultScore = result == Result.Won ? 6 : result == Result.Draw ? 3 : 0;
-    return (int)game.response + resultScore;
+    var neededChoice = (Choice)(((int)game.opponent + (int)game.result + 3) % 3);
+    var resultScore = game.result == Result.Won ? 6 : game.result == Result.Draw ? 3 : 0;
+    return (int)neededChoice+1 + resultScore;
 }
 
 timer.Stop();
-Console.WriteLine(result); // 15191 too high
+Console.WriteLine(result);
 Console.WriteLine(timer.ElapsedMilliseconds + "ms");
 Console.ReadLine();
 
-enum Choice { Rock = 1, Paper = 2, Scissors = 3 }
-enum Result { Won = 1, Loss = 2, Draw = 0 }
+enum Choice { Rock = 0, Paper = 1, Scissors = 2 }
+enum Result { Won = 1, Loss = -1, Draw = 0 }
