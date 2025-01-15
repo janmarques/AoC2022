@@ -317,11 +317,10 @@ var timer = System.Diagnostics.Stopwatch.StartNew();
 
 var result = 0;
 
-foreach (var line in input.Split(Environment.NewLine))
+var lines = input.Split(Environment.NewLine).ToArray();
+for (int i = 0; i <= lines.Length - 3; i = i + 3)
 {
-    var half1 = line.Substring(0, line.Length / 2);
-    var half2 = line.Substring(line.Length / 2);
-    var item = half1.First(x => half2.Contains(x));
+    var item = lines[i].First(x => lines[i + 1].Contains(x) && lines[i + 2].Contains(x));
     if (char.IsAsciiLetterLower(item))
     {
         result += item - 'a' + 1;
