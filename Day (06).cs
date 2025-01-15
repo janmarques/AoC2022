@@ -13,9 +13,9 @@ var timer = System.Diagnostics.Stopwatch.StartNew();
 
 var result = 0;
 
-for (int i = 4; i < input.Length; i++)
+for (int i = 14; i < input.Length; i++)
 {
-    if (input[(i - 4)..i].Distinct().Count() == 4)
+    if (input[(i - 14)..i].Distinct().Count() == 14)
     {
         result = i; break;
     }
