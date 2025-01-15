@@ -1022,7 +1022,7 @@ foreach (var line in input.Split(Environment.NewLine))
     var split = line.Split(new[] { '-', ',' }).Select(long.Parse).ToArray();
     var one = (from: split[0], to: split[1]);
     var two = (from: split[2], to: split[3]);
-    if (Utils.Encloses(one, two) || Utils.Encloses(two, one))
+    if (Utils.Overlaps(one, two) )
     {
         result++;
     }
